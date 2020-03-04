@@ -18,6 +18,10 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import App from "./App";
 
+// Axios
+import axios from 'axios'
+import VueAxios from 'vue-axios'
+
 // router setup
 import routes from "./routes/routes";
 
@@ -47,6 +51,7 @@ Vue.use(MaterialDashboard);
 Vue.use(GlobalComponents);
 Vue.use(GlobalDirectives);
 Vue.use(Notifications);
+Vue.use(VueAxios, axios);
 
 /* eslint-disable no-new */
 new Vue({

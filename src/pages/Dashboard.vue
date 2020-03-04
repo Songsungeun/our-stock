@@ -279,6 +279,13 @@ export default {
         ]
       }
     };
+  },
+  mounted() {
+    this.axios
+      .get("https://finance.naver.com/sise/sise_index.nhn?code=KOSPI")
+      .then(res => {
+        console.log(res.data);
+      });
   }
 };
 </script>
