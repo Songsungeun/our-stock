@@ -29,6 +29,9 @@ import Notifications from "./components/NotificationPlugin";
 // MaterialDashboard plugin
 import MaterialDashboard from "./material-dashboard";
 
+// Vuex Store 추가
+import { store } from './store/store';
+
 import Chartist from "chartist";
 
 // configure router
@@ -50,6 +53,7 @@ new Vue({
   el: "#app",
   render: h => h(App),
   router,
+  store,
   data: {
     Chartist: Chartist
   }
