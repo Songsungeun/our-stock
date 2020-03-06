@@ -2,31 +2,31 @@
   <div class="content">
     <div class="md-layout">
       <div class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-33">
-        <chart-card
-          :chart-data="dailySalesChart.data"
-          :chart-options="dailySalesChart.options"
-          :chart-type="'Line'"
-          data-background-color="blue"
-        >
-          <template slot="content">
-            <h4 class="title">코스피</h4>
-            <p class="category">
-              <span class="text-success">
-                <i class="fas fa-long-arrow-alt-up"></i> 55%
-              </span>
-              increase in today sales.
-            </p>
+        <stats-card :data-background-color="kospi.updown === 'up' ? 'red' : 'blue'">
+          <template slot="header">
+            <md-icon>show_chart</md-icon>
           </template>
 
-          <template slot="footer">
-            <div class="stats">
-              <md-icon>access_time</md-icon>updated 4 minutes ago
-            </div>
+          <template slot="content">
+            <p class="category" style="font-weight: bold;">코스피</p>
+            <h3 class="title" v-bind:class="kospi.updown">{{kospi.val}}</h3>
+            <span v-bind:class="kospi.updown">{{kospi.index}}&nbsp;</span>
+            <span v-bind:class="kospi.updown">
+              <md-icon v-if="kospi.updown === 'down'" v-bind:class="kospi.updown">arrow_drop_down</md-icon>
+              <md-icon v-if="kospi.updown === 'up'" v-bind:class="kospi.updown">arrow_drop_up</md-icon>
+              {{kospi.rate}}
+            </span>
           </template>
-        </chart-card>
+
+          <!-- <template slot="footer">
+            <div class="stats">
+              <md-icon>date_range</md-icon>Last 24 Hours
+            </div>
+          </template>-->
+        </stats-card>
       </div>
       <div class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-33">
-        <chart-card
+        <!-- <chart-card
           :chart-data="emailsSubscriptionChart.data"
           :chart-options="emailsSubscriptionChart.options"
           :chart-responsive-options="emailsSubscriptionChart.responsiveOptions"
@@ -43,26 +43,52 @@
               <md-icon>access_time</md-icon>updated 10 days ago
             </div>
           </template>
-        </chart-card>
+        </chart-card>-->
+        <stats-card :data-background-color="kosdaq.updown === 'up' ? 'red' : 'blue'">
+          <template slot="header">
+            <md-icon>bar_chart</md-icon>
+          </template>
+
+          <template slot="content">
+            <p class="category" style="font-weight: bold;">코스닥</p>
+            <h3 class="title" v-bind:class="kosdaq.updown">{{kosdaq.val}}</h3>
+            <span v-bind:class="kosdaq.updown">{{kosdaq.index}}&nbsp;</span>
+            <span v-bind:class="kosdaq.updown">
+              <md-icon v-if="kosdaq.updown === 'down'" v-bind:class="kosdaq.updown">arrow_drop_down</md-icon>
+              <md-icon v-if="kosdaq.updown === 'up'" v-bind:class="kosdaq.updown">arrow_drop_up</md-icon>
+              {{kosdaq.rate}}
+            </span>
+          </template>
+
+          <!-- <template slot="footer">
+            <div class="stats">
+              <md-icon class="text-danger">warning</md-icon>
+              <a href="#pablo">Get More Space...</a>
+            </div>
+          </template>-->
+        </stats-card>
       </div>
       <div class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-33">
-        <chart-card
-          :chart-data="dataCompletedTasksChart.data"
-          :chart-options="dataCompletedTasksChart.options"
-          :chart-type="'Line'"
-          data-background-color="green"
-        >
+        <stats-card data-background-color="orange">
+          <template slot="header">
+            <md-icon>content_copy</md-icon>
+          </template>
+
           <template slot="content">
-            <h4 class="title">Completed Tasks</h4>
-            <p class="category">Last Campaign Performance</p>
+            <p class="category">Used Space</p>
+            <h3 class="title">
+              49/50
+              <small>GB</small>
+            </h3>
           </template>
 
           <template slot="footer">
             <div class="stats">
-              <md-icon>access_time</md-icon>campaign sent 26 minutes ago
+              <md-icon class="text-danger">warning</md-icon>
+              <a href="#pablo">Get More Space...</a>
             </div>
           </template>
-        </chart-card>
+        </stats-card>
       </div>
       <div class="md-layout-item md-medium-size-50 md-xsmall-size-100 md-size-25">
         <stats-card data-background-color="green">
@@ -178,7 +204,7 @@
 <script>
 import {
   StatsCard,
-  ChartCard,
+  // ChartCard,
   NavTabsCard,
   NavTabsTable,
   OrderedTable
@@ -187,105 +213,42 @@ import {
 export default {
   components: {
     StatsCard,
-    ChartCard,
+    // ChartCard,
     NavTabsCard,
     NavTabsTable,
     OrderedTable
   },
   data() {
     return {
-      dailySalesChart: {
-        data: {
-          labels: ["M", "T", "W", "T", "F", "S", "S"],
-          series: [[12, 17, 7, 17, 23, 18, 38]]
-        },
-        options: {
-          lineSmooth: this.$Chartist.Interpolation.cardinal({
-            tension: 0
-          }),
-          low: 0,
-          high: 50, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
-          chartPadding: {
-            top: 0,
-            right: 0,
-            bottom: 0,
-            left: 0
-          }
-        }
-      },
-      dataCompletedTasksChart: {
-        data: {
-          labels: ["12am", "3pm", "6pm", "9pm", "12pm", "3am", "6am", "9am"],
-          series: [[230, 750, 450, 300, 280, 240, 200, 190]]
-        },
-
-        options: {
-          lineSmooth: this.$Chartist.Interpolation.cardinal({
-            tension: 0
-          }),
-          low: 0,
-          high: 1000, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
-          chartPadding: {
-            top: 0,
-            right: 0,
-            bottom: 0,
-            left: 0
-          }
-        }
-      },
-      emailsSubscriptionChart: {
-        data: {
-          labels: [
-            "Ja",
-            "Fe",
-            "Ma",
-            "Ap",
-            "Mai",
-            "Ju",
-            "Jul",
-            "Au",
-            "Se",
-            "Oc",
-            "No",
-            "De"
-          ],
-          series: [[542, 443, 320, 780, 553, 453, 326, 434, 568, 610, 756, 895]]
-        },
-        options: {
-          axisX: {
-            showGrid: false
-          },
-          low: 0,
-          high: 1000,
-          chartPadding: {
-            top: 0,
-            right: 5,
-            bottom: 0,
-            left: 0
-          }
-        },
-        responsiveOptions: [
-          [
-            "screen and (max-width: 640px)",
-            {
-              seriesBarDistance: 5,
-              axisX: {
-                labelInterpolationFnc: function(value) {
-                  return value[0];
-                }
-              }
-            }
-          ]
-        ]
-      }
+      kospi: {},
+      kosdaq: {},
+      nasdaq: {}
+    };
+  },
+  computed() {
+    kospiUpdown: () => {
+      return this.kospi.updown;
     };
   },
   mounted() {
-    this.axios
-      .get("https://finance.naver.com/sise/sise_index.nhn?code=KOSPI")
-      .then(res => {
-        console.log(res.data);
-      });
+    this.axios.get("http://localhost:3000/getTotalIndex").then(res => {
+      for (let key in res.data) {
+        if (res.data[key].length < 1) return;
+        let splitData = res.data[key].rate.split(" ");
+        res.data[key].index = splitData[0];
+        res.data[key].rate = splitData[1];
+        res.data[key].updown = "";
+        // debugger;
+        if (res.data[key].rate && res.data[key].rate !== "") {
+          res.data[key].updown =
+            res.data[key].rate.charAt(0) === "+" ? "up" : "down";
+        }
+      }
+      console.log(res.data);
+      this.kospi = res.data.kospi;
+      this.kosdaq = res.data.kosdaq;
+      this.nasdaq = res.data.nasdaq;
+    });
   }
 };
 </script>

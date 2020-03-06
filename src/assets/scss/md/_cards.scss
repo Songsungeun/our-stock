@@ -59,6 +59,20 @@
         .category{
             margin: 0;
         }
+
+        .title {
+            font-weight: bold;
+        }
+
+        .up {
+            font-weight: bold;
+            color: $red-A700;
+        }
+
+        .down {
+            font-weight: bold;
+            color: $blue-900;
+        }
     }
 
     .md-card-header{
