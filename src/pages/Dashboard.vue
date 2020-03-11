@@ -1,8 +1,9 @@
+/* eslint-disable prettier/prettier */
 <template>
   <div class="content">
     <div class="md-layout">
       <div class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-33">
-        <stats-card :data-background-color="kospi.updown === 'up' ? 'red' : 'blue'">
+        <stats-card data-background-color="red">
           <template slot="header">
             <md-icon>show_chart</md-icon>
           </template>
@@ -14,7 +15,7 @@
             <span v-bind:class="kospi.updown">
               <md-icon v-if="kospi.updown === 'down'" v-bind:class="kospi.updown">arrow_drop_down</md-icon>
               <md-icon v-if="kospi.updown === 'up'" v-bind:class="kospi.updown">arrow_drop_up</md-icon>
-              {{kospi.rate}}
+              {{kospi.rate}}%
             </span>
           </template>
 
@@ -44,7 +45,7 @@
             </div>
           </template>
         </chart-card>-->
-        <stats-card :data-background-color="kosdaq.updown === 'up' ? 'red' : 'blue'">
+        <stats-card data-background-color="blue">
           <template slot="header">
             <md-icon>bar_chart</md-icon>
           </template>
@@ -56,7 +57,7 @@
             <span v-bind:class="kosdaq.updown">
               <md-icon v-if="kosdaq.updown === 'down'" v-bind:class="kosdaq.updown">arrow_drop_down</md-icon>
               <md-icon v-if="kosdaq.updown === 'up'" v-bind:class="kosdaq.updown">arrow_drop_up</md-icon>
-              {{kosdaq.rate}}
+              {{kosdaq.rate}}%
             </span>
           </template>
 
@@ -71,23 +72,26 @@
       <div class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-33">
         <stats-card data-background-color="orange">
           <template slot="header">
-            <md-icon>content_copy</md-icon>
+            <md-icon>multiline_chart</md-icon>
           </template>
 
           <template slot="content">
-            <p class="category">Used Space</p>
-            <h3 class="title">
-              49/50
-              <small>GB</small>
-            </h3>
+            <p class="category" style="font-weight: bold;">나스닥</p>
+            <h3 class="title" v-bind:class="nasdaq.updown">{{nasdaq.val}}</h3>
+            <span v-bind:class="nasdaq.updown">{{nasdaq.index}}&nbsp;</span>
+            <span v-bind:class="nasdaq.updown">
+              <md-icon v-if="nasdaq.updown === 'down'" v-bind:class="nasdaq.updown">arrow_drop_down</md-icon>
+              <md-icon v-if="nasdaq.updown === 'up'" v-bind:class="nasdaq.updown">arrow_drop_up</md-icon>
+              {{ nasdaq.rate }}%
+            </span>
           </template>
 
-          <template slot="footer">
+          <!-- <template slot="footer">
             <div class="stats">
               <md-icon class="text-danger">warning</md-icon>
               <a href="#pablo">Get More Space...</a>
             </div>
-          </template>
+          </template>-->
         </stats-card>
       </div>
       <div class="md-layout-item md-medium-size-50 md-xsmall-size-100 md-size-25">
@@ -225,30 +229,32 @@ export default {
       nasdaq: {}
     };
   },
-  computed() {
-    kospiUpdown: () => {
-      return this.kospi.updown;
-    };
-  },
+  computed() {},
   mounted() {
-    this.axios.get("http://localhost:3000/getTotalIndex").then(res => {
-      for (let key in res.data) {
-        if (res.data[key].length < 1) return;
-        let splitData = res.data[key].rate.split(" ");
-        res.data[key].index = splitData[0];
-        res.data[key].rate = splitData[1];
-        res.data[key].updown = "";
-        // debugger;
-        if (res.data[key].rate && res.data[key].rate !== "") {
-          res.data[key].updown =
-            res.data[key].rate.charAt(0) === "+" ? "up" : "down";
+    setInterval(() => {
+      this.getTotalIndexData();
+    }, 3000);
+  },
+  methods: {
+    getTotalIndexData() {
+      this.axios.get("http://localhost:3000/getTotalIndex").then(res => {
+        for (let key in res.data) {
+          if (res.data[key].length < 1) return;
+          let splitData = res.data[key].rate.split(" ");
+          res.data[key].index = splitData[0];
+          res.data[key].rate = splitData[1];
+          res.data[key].updown = "";
+
+          if (res.data[key].rate && res.data[key].rate !== "") {
+            res.data[key].updown =
+              res.data[key].rate.charAt(0) === "+" ? "up" : "down";
+          }
         }
-      }
-      console.log(res.data);
-      this.kospi = res.data.kospi;
-      this.kosdaq = res.data.kosdaq;
-      this.nasdaq = res.data.nasdaq;
-    });
+        this.kospi = res.data.kospi;
+        this.kosdaq = res.data.kosdaq;
+        this.nasdaq = res.data.nasdaq;
+      });
+    }
   }
 };
 </script>
