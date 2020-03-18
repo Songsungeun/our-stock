@@ -44,7 +44,7 @@ export default {
   props: {
     title: {
       type: String,
-      default: "Vue MD"
+      default: "우리의 주식"
     },
     backgroundImage: {
       type: String,

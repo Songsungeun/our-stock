@@ -94,7 +94,7 @@
           </template>-->
         </stats-card>
       </div>
-      <div class="md-layout-item md-medium-size-50 md-xsmall-size-100 md-size-25">
+      <!-- <div class="md-layout-item md-medium-size-50 md-xsmall-size-100 md-size-25">
         <stats-card data-background-color="green">
           <template slot="header">
             <md-icon>store</md-icon>
@@ -169,19 +169,22 @@
             </div>
           </template>
         </stats-card>
-      </div>
-      <div class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-50">
+      </div>-->
+      <div class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-100">
         <md-card>
           <md-card-header data-background-color="orange">
-            <h4 class="title">Employees Stats</h4>
-            <p class="category">New employees on 15th September, 2016</p>
+            <h4 class="title">추천 종목</h4>
+            <p class="category">
+              오팀 추천 종목-
+              <span>(현재가는 1분지연) 참고용도로만 사용</span>
+            </p>
           </md-card-header>
           <md-card-content>
             <ordered-table table-header-color="orange"></ordered-table>
           </md-card-content>
         </md-card>
       </div>
-      <div class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-50">
+      <div class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-100">
         <nav-tabs-card>
           <template slot="content">
             <span class="md-nav-tabs-title">Tasks:</span>
@@ -231,9 +234,10 @@ export default {
   },
   computed() {},
   mounted() {
+    this.getTotalIndexData();
     setInterval(() => {
       this.getTotalIndexData();
-    }, 3000);
+    }, 10000);
   },
   methods: {
     getTotalIndexData() {

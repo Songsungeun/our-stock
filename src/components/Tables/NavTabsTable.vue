@@ -14,7 +14,7 @@
             <md-tooltip md-direction="top">Edit</md-tooltip>
           </md-button>
           <md-button class="md-just-icon md-simple md-danger">
-            <md-icon>close</md-icon>
+            <md-icon>delete</md-icon>
             <md-tooltip md-direction="top">Close</md-tooltip>
           </md-button>
         </md-table-cell>
