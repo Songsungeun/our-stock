@@ -2,7 +2,7 @@
 <template>
   <div class="content">
     <div class="md-layout">
-      <div class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-33">
+      <div class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-25">
         <stats-card data-background-color="red">
           <template slot="header">
             <md-icon>show_chart</md-icon>
@@ -26,7 +26,7 @@
           </template>-->
         </stats-card>
       </div>
-      <div class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-33">
+      <div class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-25">
         <!-- <chart-card
           :chart-data="emailsSubscriptionChart.data"
           :chart-options="emailsSubscriptionChart.options"
@@ -69,7 +69,7 @@
           </template>-->
         </stats-card>
       </div>
-      <div class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-33">
+      <div class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-25">
         <stats-card data-background-color="orange">
           <template slot="header">
             <md-icon>multiline_chart</md-icon>
@@ -83,6 +83,34 @@
               <md-icon v-if="nasdaq.updown === 'down'" v-bind:class="nasdaq.updown">arrow_drop_down</md-icon>
               <md-icon v-if="nasdaq.updown === 'up'" v-bind:class="nasdaq.updown">arrow_drop_up</md-icon>
               {{ nasdaq.rate }}%
+            </span>
+          </template>
+
+          <!-- <template slot="footer">
+            <div class="stats">
+              <md-icon class="text-danger">warning</md-icon>
+              <a href="#pablo">Get More Space...</a>
+            </div>
+          </template>-->
+        </stats-card>
+      </div>
+      <div class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-25">
+        <stats-card data-background-color="green">
+          <template slot="header">
+            <md-icon>multiline_chart</md-icon>
+          </template>
+
+          <template slot="content">
+            <p class="category" style="font-weight: bold;">$환율</p>
+            <h3 class="title" v-bind:class="exchange.updown">{{exchange.val}}</h3>
+            <span v-bind:class="exchange.updown">{{exchange.index}}&nbsp;</span>
+            <span v-bind:class="exchange.updown">
+              <md-icon
+                v-if="exchange.updown === 'down'"
+                v-bind:class="exchange.updown"
+              >arrow_drop_down</md-icon>
+              <md-icon v-if="exchange.updown === 'up'" v-bind:class="exchange.updown">arrow_drop_up</md-icon>
+              {{ exchange.rate }}
             </span>
           </template>
 
@@ -229,7 +257,8 @@ export default {
     return {
       kospi: {},
       kosdaq: {},
-      nasdaq: {}
+      nasdaq: {},
+      exchange: {}
     };
   },
   computed() {},
@@ -242,11 +271,15 @@ export default {
   methods: {
     getTotalIndexData() {
       this.axios.get("http://localhost:3000/getTotalIndex").then(res => {
+        console.log(res);
         for (let key in res.data) {
           if (res.data[key].length < 1) return;
           let splitData = res.data[key].rate.split(" ");
-          res.data[key].index = splitData[0];
-          res.data[key].rate = splitData[1];
+          if (key !== "exchange") {
+            //환율은 split 하지 않음.
+            res.data[key].index = splitData[0];
+            res.data[key].rate = splitData[1];
+          }
           res.data[key].updown = "";
 
           if (res.data[key].rate && res.data[key].rate !== "") {
@@ -257,6 +290,7 @@ export default {
         this.kospi = res.data.kospi;
         this.kosdaq = res.data.kosdaq;
         this.nasdaq = res.data.nasdaq;
+        this.exchange = res.data.exchange;
       });
     }
   }
